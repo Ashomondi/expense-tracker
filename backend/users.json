@@ -1,0 +1,10 @@
+{
+  "alice": {
+    "username": "alice",
+    "passwordHash": "$2a$10$F7k...rest_of_hashed_password"
+  },
+  "bob": {
+    "username": "bob",
+    "passwordHash": "$2a$10$Aq8...rest_of_hashed_password"
+  }
+}

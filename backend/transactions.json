@@ -1,0 +1,18 @@
+[
+  {
+    "id": "20260331123045",
+    "username": "alice",
+    "desc": "Lunch",
+    "amount": -500,
+    "category": "Food",
+    "date": "2026-03-31"
+  },
+  {
+    "id": "20260331123500",
+    "username": "alice",
+    "desc": "Salary",
+    "amount": 50000,
+    "category": "Income",
+    "date": "2026-03-31"
+  }
+]

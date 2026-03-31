@@ -1,0 +1,15 @@
+# Node / frontend
+node_modules/
+*.log
+
+# Go / backend
+*.exe
+*.test
+vendor/
+go.sum
+go.mod
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db

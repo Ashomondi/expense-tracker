@@ -1,0 +1,74 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #2563eb, #1e3a8a);
+  color: white;
+  overflow-x: hidden;
+}
+
+.page { padding: 20px; min-height: 100vh; transition: all 0.5s ease; }
+.hidden { display: none; }
+
+.landing-bg {
+  text-align: center;
+  background: url('cash-bg.jpg') center/cover no-repeat;
+  padding: 100px 20px;
+  border-radius: 15px;
+  animation: fadeIn 1s ease;
+}
+
+.btn-group { margin-top: 30px; }
+.btn {
+  padding: 12px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.btn:hover { opacity: 0.8; }
+
+.back-btn { background: #f87171; color: white; }
+.add-btn { background: #60a5fa; color: white; }
+.logout-btn { background: #ef4444; color: white; }
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px 0;
+}
+.card {
+  flex: 1;
+  min-width: 150px;
+  background: white;
+  color: #1e3a8a;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  animation: slideIn 0.5s ease;
+}
+
+.project-desc { margin: 10px 0 20px 0; font-size: 16px; color: #dbeafe; }
+
+input, select { padding: 10px; margin: 5px 0; border-radius: 8px; border: none; width: 100%; }
+ul { list-style: none; padding: 0; }
+li { background: white; color: black; margin: 10px 0; padding: 10px; border-radius: 10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+
+.edit-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: #facc15;
+  color: #1e3a8a;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.edit-btn:hover { opacity: 0.8; }
+
+@keyframes fadeIn { from {opacity:0} to {opacity:1} }
+@keyframes slideIn { from {transform: translateY(50px); opacity:0} to {transform:translateY(0); opacity:1} }

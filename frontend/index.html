@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Landing Page -->
+  <section id="landing" class="page">
+    <div class="landing-bg">
+      <h1>Expense Tracker</h1>
+      <p>Track your expenses, manage your budget, and stay organized. Offline or online, your data is safe.</p>
+      <div class="btn-group">
+        <button id="guestBtn" class="btn">Continue as Guest</button>
+        <button id="loginBtn" class="btn">Log In</button>
+        <button id="signupBtn" class="btn">Sign Up</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Auth Page -->
+  <section id="authPage" class="page hidden">
+    <button id="backBtn" class="btn back-btn">← Back</button>
+    <h2 id="authTitle">Log In</h2>
+    <form id="authForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+    <p id="toggleAuth">Don't have an account? Sign Up</p>
+  </section>
+
+  <!-- Dashboard Page -->
+  <section id="dashboard" class="page hidden">
+    <button id="dashBackBtn" class="btn back-btn">← Back</button>
+
+    <h1>Expense Tracker</h1>
+    <p class="project-desc">This project helps you track your income, spending, savings, and emergency funds. Manage your money wisely and see what's left every month!</p>
+
+    <!-- Dashboard Cards -->
+    <div class="cards">
+      <div class="card">
+        <h3>Income</h3>
+        <p id="income">Ksh 0</p>
+        <button class="edit-btn" data-type="Income">Edit</button>
+      </div>
+      <div class="card">
+        <h3>Money Used</h3>
+        <p id="expenses">Ksh 0</p>
+        <button class="edit-btn" data-type="Expense">Edit</button>
+      </div>
+      <div class="card">
+        <h3>Money Saved</h3>
+        <p id="savings">Ksh 0</p>
+        <button class="edit-btn" data-type="Saving">Edit</button>
+      </div>
+      <div class="card">
+        <h3>Emergency Fund</h3>
+        <p id="emergency">Ksh 0</p>
+        <button class="edit-btn" data-type="Emergency">Edit</button>
+      </div>
+      <div class="card">
+        <h3>Total Money Left</h3>
+        <p id="balance">Ksh 0</p>
+      </div>
+    </div>
+
+    <!-- Add Transaction Form -->
+    <section class="form-section">
+      <h3>Add Transaction / Savings / Emergency</h3>
+      <form id="transactionForm">
+        <input type="text" id="desc" placeholder="Description" required>
+        <input type="number" id="amount" placeholder="Amount" required>
+        <select id="category">
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
+          <option value="Saving">Saving</option>
+          <option value="Emergency">Emergency</option>
+        </select>
+        <button type="submit" class="btn add-btn">Add</button>
+      </form>
+    </section>
+
+    <!-- Transaction History -->
+    <section class="list-section">
+      <h3>Transaction History</h3>
+      <ul id="list"></ul>
+    </section>
+
+    <button id="logoutBtn" class="btn logout-btn">Log Out</button>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
