@@ -1,0 +1,29 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Documentation
+*.md
+README.md
+
+# Build artifacts
+*.exe
+*.test
+*.out
+
+# Dependency directories
+vendor/
+
+# Data files (will be created at runtime)
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log

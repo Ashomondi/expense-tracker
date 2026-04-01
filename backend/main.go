@@ -124,9 +124,17 @@ func main() {
 	r.HandleFunc("/transactions", addTxHandler).Methods("POST")
 
 	// --- Serve frontend ---
-	fs := http.FileServer(http.Dir("../frontend/"))
+	frontendDir := os.Getenv("FRONTEND_DIR")
+	if frontendDir == "" {
+		frontendDir = "../frontend/"
+	}
+	fs := http.FileServer(http.Dir(frontendDir))
 	r.PathPrefix("/").Handler(fs)
 
-	log.Println("App running on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	log.Printf("App running on http://localhost:%s", port)
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
