@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -20,48 +19,37 @@ var (
 	jwtKey           = []byte("supersecretkey")
 )
 
-type (
-	User        struct{ Username, Password string }
-	Transaction struct {
-		Username, Desc, Category, Date string
-		Amount                         float64
-	}
-)
+type User struct {
+	Username, Password string
+}
+type Transaction struct {
+	Username, Desc, Category, Date string
+	Amount                         float64
+}
 type Claims struct {
 	Username string
 	jwt.RegisteredClaims
 }
 
+// --- Helper functions ---
 func readUsers() map[string]string {
 	data, _ := ioutil.ReadFile(usersFile)
 	var m map[string]string
 	json.Unmarshal(data, &m)
-	if m == nil {
-		return map[string]string{}
-	}
+	if m == nil { return map[string]string{} }
 	return m
 }
-
-func saveUsers(u map[string]string) {
-	b, _ := json.MarshalIndent(u, "", " ")
-	ioutil.WriteFile(usersFile, b, 0644)
-}
-
-func readTransactions() []Transaction {
+func saveUsers(u map[string]string) { b, _ := json.MarshalIndent(u, "", " "); ioutil.WriteFile(usersFile, b, 0644) }
+func readTransactions() []Transaction { 
 	data, _ := ioutil.ReadFile(transactionsFile)
 	var t []Transaction
 	json.Unmarshal(data, &t)
-	if t == nil {
-		return []Transaction{}
-	}
+	if t == nil { return []Transaction{} }
 	return t
 }
+func saveTransactions(t []Transaction) { b, _ := json.MarshalIndent(t, "", " "); ioutil.WriteFile(transactionsFile, b, 0644) }
 
-func saveTransactions(t []Transaction) {
-	b, _ := json.MarshalIndent(t, "", " ")
-	ioutil.WriteFile(transactionsFile, b, 0644)
-}
-
+// --- Auth handlers ---
 func signupHandler(w http.ResponseWriter, r *http.Request) {
 	var u User
 	json.NewDecoder(r.Body).Decode(&u)
@@ -95,35 +83,24 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 func validateToken(r *http.Request) (string, error) {
 	t := r.Header.Get("Authorization")
 	token, err := jwt.ParseWithClaims(t, &Claims{}, func(t *jwt.Token) (interface{}, error) { return jwtKey, nil })
-	if err != nil {
-		return "", err
-	}
+	if err != nil { return "", err }
 	claims := token.Claims.(*Claims)
 	return claims.Username, nil
 }
 
+// --- Transactions handlers ---
 func getTxHandler(w http.ResponseWriter, r *http.Request) {
 	u, err := validateToken(r)
-	if err != nil {
-		http.Error(w, "Unauthorized", 401)
-		return
-	}
+	if err != nil { http.Error(w, "Unauthorized", 401); return }
 	all := readTransactions()
 	userTx := []Transaction{}
-	for _, t := range all {
-		if t.Username == u {
-			userTx = append(userTx, t)
-		}
-	}
+	for _, t := range all { if t.Username == u { userTx = append(userTx, t) } }
 	json.NewEncoder(w).Encode(userTx)
 }
 
 func addTxHandler(w http.ResponseWriter, r *http.Request) {
 	u, err := validateToken(r)
-	if err != nil {
-		http.Error(w, "Unauthorized", 401)
-		return
-	}
+	if err != nil { http.Error(w, "Unauthorized", 401); return }
 	var t Transaction
 	json.NewDecoder(r.Body).Decode(&t)
 	t.Username = u
@@ -135,17 +112,21 @@ func addTxHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	if _, err := os.Stat(usersFile); os.IsNotExist(err) {
-		ioutil.WriteFile(usersFile, []byte("{}"), 0644)
-	}
-	if _, err := os.Stat(transactionsFile); os.IsNotExist(err) {
-		ioutil.WriteFile(transactionsFile, []byte("[]"), 0644)
-	}
+	if _, err := os.Stat(usersFile); os.IsNotExist(err) { ioutil.WriteFile(usersFile, []byte("{}"), 0644) }
+	if _, err := os.Stat(transactionsFile); os.IsNotExist(err) { ioutil.WriteFile(transactionsFile, []byte("[]"), 0644) }
+
 	r := mux.NewRouter()
+
+	// --- API routes ---
 	r.HandleFunc("/signup", signupHandler).Methods("POST")
 	r.HandleFunc("/login", loginHandler).Methods("POST")
 	r.HandleFunc("/transactions", getTxHandler).Methods("GET")
 	r.HandleFunc("/transactions", addTxHandler).Methods("POST")
-	fmt.Println("Backend running on :8080")
+
+	// --- Serve frontend ---
+	fs := http.FileServer(http.Dir("../frontend/"))
+	r.PathPrefix("/").Handler(fs)
+
+	log.Println("App running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
