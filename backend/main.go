@@ -126,7 +126,7 @@ func main() {
 	// --- Serve frontend ---
 	frontendDir := os.Getenv("FRONTEND_DIR")
 	if frontendDir == "" {
-		frontendDir = "./frontend/"
+		frontendDir = "../frontend/"
 	}
 	fs := http.FileServer(http.Dir(frontendDir))
 	r.PathPrefix("/").Handler(fs)
